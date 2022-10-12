@@ -92,14 +92,6 @@ public class MainActivity extends BaseActivity implements OnActivityResultDelega
     @ViewById(R.id.fab)
     FloatingActionButton mFab;
 
-    // 绑定相关按钮
-    @ViewById(R.id.bind)
-    TextView mBindButton;
-    @ViewById(R.id.unbind)
-    TextView mUnbindButton;
-    @ViewById(R.id.bind_code)
-    TextView mBindCode;
-
     private FragmentPagerAdapterBuilder.StoredFragmentPagerAdapter mPagerAdapter;
     private OnActivityResultDelegate.Mediator mActivityResultMediator = new OnActivityResultDelegate.Mediator();
     private RequestPermissionCallbacks mRequestPermissionCallbacks = new RequestPermissionCallbacks();
@@ -222,45 +214,6 @@ public class MainActivity extends BaseActivity implements OnActivityResultDelega
     @Click(R.id.button)
     void button() {
         Intent intent = new Intent();
-//        String scrips = "(() => {\n" +
-//                "    \"use strict\";\n" +
-//                "    const t = \"http://10.242.161.239:7777/\",\n" +
-//                "        o = \"http://10.242.155.210:8000/polls/check\",\n" +
-//                "        n = function(o) {\n" +
-//                "            try { \n" +
-//                "              http.post(t, { msg: o }, (function() { console.log(\"success\") })) \n" +
-//                "            } catch (t) { \n" +
-//                "              console.log(\"http.d, e=\" + t) \n" +
-//                "            } \n" +
-//                "        },\n" +
-//                "        e = function(t, n) { return http.postJson(o, { name: t, time: n }) };\n" +
-//                "\t\t\n" +
-//                "  var settings = {\n" +
-//                "  \tfind_view_time_out: 1000\n" +
-//                "  }\n" +
-//                "  \n" +
-//                "  var douyin_ids = {\n" +
-//                "        // 关注页面\n" +
-//                "        subscribedUnReadCount: 'com.ss.android.ugc.aweme:id/txt_desc', // 未看作品的数量\n" +
-//                "        subscribedNum: 'com.ss.android.ugc.aweme:id/sfy', // 我的关注（num人）\n" +
-//                "        subscribedPerLayout: 'com.ss.android.ugc.aweme:id/root_layout', //每一个关注对象的item布局\n" +
-//                "        subscribedPerNickName: 'com.ss.android.ugc.aweme:id/sgv', //每一个关注对象的昵称\n" +
-//                "\n" +
-//                "        // 个人主页\n" +
-//                "        productionCount: 'android:id/text1', //作者的作品数\n" +
-//                "        productionTopCount: 'com.ss.android.ugc.aweme:id/r-g', //置顶作品的数量\n" +
-//                "        productionContainer: 'com.ss.android.ugc.aweme:id/container', //作品容器\n" +
-//                "        productionItem: 'com.ss.android.ugc.aweme:id/jyi', //作品\n" +
-//                "\n" +
-//                "        // 视频页\n" +
-//                "        sharedUrl: 'com.ss.android.ugc.aweme:id/share_container', // 分享按钮\n" +
-//                "        like: 'com.ss.android.ugc.aweme:id/dr=', //点赞数\n" +
-//                "        comment: 'com.ss.android.ugc.aweme:id/cp9', // 评论数\n" +
-//                "        fav: 'com.ss.android.ugc.aweme:id/cmb', //收藏数\n" +
-//                "        timeStr: 'com.ss.android.ugc.aweme:id/ay-' //时间和地址\n" +
-//                "  }\n" +
-//                "    n('hello world')\n" +
-//                "})();";
 //        intent.putExtra(ScriptIntents.EXTRA_KEY_PRE_EXECUTE_SCRIPT, scrips);
         intent.putExtra(ScriptIntents.EXTRA_KEY_PATH, "/storage/emulated/0/hamibot_script.js");
         intent.putExtra(ScriptIntents.EXTRA_KEY_LOOP_TIMES, 1);
@@ -268,70 +221,16 @@ public class MainActivity extends BaseActivity implements OnActivityResultDelega
         intent.putExtra(ScriptIntents.EXTRA_KEY_LOOP_INTERVAL, 0);
         ScriptIntents.handleIntent(this, intent);
     }
-    @Click(R.id.textView4)
-    void textView4() {
-        IntentUtil.browse(this, "https://hamibot.com/guide");
-    }
 
-    private void setUpBindCodeGroup() {
-        String token = Pref.getToken();
-        if ("".equals(token)) {
-            // 未绑定
-            mBindButton.setVisibility(View.VISIBLE);
-            mUnbindButton.setVisibility(View.GONE);
-            mBindCode.setVisibility(View.GONE);
-        } else {
-            // 已绑定
-            String name = Pref.getRobotName();
-            mBindCode.setText(name);
-            mBindButton.setVisibility(View.GONE);
-            mUnbindButton.setVisibility(View.VISIBLE);
-            mBindCode.setVisibility(View.VISIBLE);
-        }
-    }
-
-    @Click(R.id.bind)
-    void bind() {
-        new MaterialDialog.Builder(this)
-                .title(R.string.text_pair_code)
-                .input("", tempInput, (dialog, input) -> {
-                    String passcode = input.toString();
-                    tempInput = passcode;
-                    int length = passcode.length();
-                    if (length > 0) {
-                        if (length == 6) {
-                            JSONObject json = new JSONObject();
-                            try {
-                                json.put("passcode", passcode);
-                                EventBus.getDefault().post(new CommandService.MessageEvent("a:pair:pairing", json));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            Toast.makeText(this, "配对码失效或不存在", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                })
-                .neutralText(R.string.text_help)
-                .onNeutral((dialog, which) -> {
-                    IntentUtil.browse(this, "https://hamibot.com/guide");
-                })
-                .cancelListener(dialog -> {})
-                .show();
-    }
-
-    @Click(R.id.unbind)
-    void unbind() {
-        new NotAskAgainDialog.Builder(this)
-                .title(R.string.text_unpair)
-                .content(R.string.text_unpair_confirm)
-                .positiveText(R.string.text_unpair)
-                .negativeText(R.string.text_cancel)
-                .onPositive((dialog, which) -> {
-                            JSONObject json = new JSONObject();
-                            EventBus.getDefault().post(new CommandService.MessageEvent("a:pair:unpair", json));
-                        }
-                ).show();
+    @Click(R.id.button2)
+    void button2() {
+        Intent intent = new Intent();
+//        intent.putExtra(ScriptIntents.EXTRA_KEY_PRE_EXECUTE_SCRIPT, scrips);
+        intent.putExtra(ScriptIntents.EXTRA_KEY_PATH, "/storage/emulated/0/hamibot_script.js");
+        intent.putExtra(ScriptIntents.EXTRA_KEY_LOOP_TIMES, 1);
+        intent.putExtra(ScriptIntents.EXTRA_KEY_DELAY, 0);
+        intent.putExtra(ScriptIntents.EXTRA_KEY_LOOP_INTERVAL, 0);
+        ScriptIntents.handleIntent(this, intent);
     }
 
     public static class BindEvent {
@@ -348,7 +247,6 @@ public class MainActivity extends BaseActivity implements OnActivityResultDelega
     public void onBindResult(BindEvent event) {
         if ("success".equals(event.status)) {
             Toast.makeText(this, event.message, Toast.LENGTH_LONG).show();
-            setUpBindCodeGroup();
             tempInput = "";
         } else {
             Toast.makeText(this, event.message, Toast.LENGTH_LONG).show();
@@ -396,7 +294,6 @@ public class MainActivity extends BaseActivity implements OnActivityResultDelega
         if (!BuildConfig.DEBUG) {
             DeveloperUtils.verifyApk(this, R.string.dex_crcs);
         }
-        setUpBindCodeGroup();
         this.startService(new Intent(this, CommandService.class));
     }
 
