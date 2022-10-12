@@ -71,12 +71,12 @@ public class FloatingPermission {
 
     public static void manageDrawOverlays(Context context) {
         try {
-            if (RomUtil.isMiui() && (TextUtils.equals("V10", RomUtil.getVersion() || TextUtils.equals("V11", RomUtil.getVersion()))
-                    && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                manageDrawOverlaysForAndroidM(context);
-            } else {
+//            if (RomUtil.isMiui() && (TextUtils.equals("V10", RomUtil.getVersion() || TextUtils.equals("V11", RomUtil.getVersion()))
+//                    && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
+//                manageDrawOverlaysForAndroidM(context);
+//            } else {
                 SettingsCompat.manageDrawOverlays(context);
-            }
+//            }
         } catch (Exception ex) {
             FloatingWindowPermissionUtil.goToAppDetailSettings(context, context.getPackageName());
         }

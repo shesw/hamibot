@@ -25,6 +25,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hamibot.hamibot.external.ScriptIntents;
 import com.hamibot.hamibot.notification.NotificationUtil;
 import com.stardust.app.FragmentPagerAdapterBuilder;
 import com.stardust.app.OnActivityResultDelegate;
@@ -220,7 +221,52 @@ public class MainActivity extends BaseActivity implements OnActivityResultDelega
 
     @Click(R.id.button)
     void button() {
-        IntentUtil.browse(this, "https://hamibot.com/dashboard/robots");
+        Intent intent = new Intent();
+//        String scrips = "(() => {\n" +
+//                "    \"use strict\";\n" +
+//                "    const t = \"http://10.242.161.239:7777/\",\n" +
+//                "        o = \"http://10.242.155.210:8000/polls/check\",\n" +
+//                "        n = function(o) {\n" +
+//                "            try { \n" +
+//                "              http.post(t, { msg: o }, (function() { console.log(\"success\") })) \n" +
+//                "            } catch (t) { \n" +
+//                "              console.log(\"http.d, e=\" + t) \n" +
+//                "            } \n" +
+//                "        },\n" +
+//                "        e = function(t, n) { return http.postJson(o, { name: t, time: n }) };\n" +
+//                "\t\t\n" +
+//                "  var settings = {\n" +
+//                "  \tfind_view_time_out: 1000\n" +
+//                "  }\n" +
+//                "  \n" +
+//                "  var douyin_ids = {\n" +
+//                "        // 关注页面\n" +
+//                "        subscribedUnReadCount: 'com.ss.android.ugc.aweme:id/txt_desc', // 未看作品的数量\n" +
+//                "        subscribedNum: 'com.ss.android.ugc.aweme:id/sfy', // 我的关注（num人）\n" +
+//                "        subscribedPerLayout: 'com.ss.android.ugc.aweme:id/root_layout', //每一个关注对象的item布局\n" +
+//                "        subscribedPerNickName: 'com.ss.android.ugc.aweme:id/sgv', //每一个关注对象的昵称\n" +
+//                "\n" +
+//                "        // 个人主页\n" +
+//                "        productionCount: 'android:id/text1', //作者的作品数\n" +
+//                "        productionTopCount: 'com.ss.android.ugc.aweme:id/r-g', //置顶作品的数量\n" +
+//                "        productionContainer: 'com.ss.android.ugc.aweme:id/container', //作品容器\n" +
+//                "        productionItem: 'com.ss.android.ugc.aweme:id/jyi', //作品\n" +
+//                "\n" +
+//                "        // 视频页\n" +
+//                "        sharedUrl: 'com.ss.android.ugc.aweme:id/share_container', // 分享按钮\n" +
+//                "        like: 'com.ss.android.ugc.aweme:id/dr=', //点赞数\n" +
+//                "        comment: 'com.ss.android.ugc.aweme:id/cp9', // 评论数\n" +
+//                "        fav: 'com.ss.android.ugc.aweme:id/cmb', //收藏数\n" +
+//                "        timeStr: 'com.ss.android.ugc.aweme:id/ay-' //时间和地址\n" +
+//                "  }\n" +
+//                "    n('hello world')\n" +
+//                "})();";
+//        intent.putExtra(ScriptIntents.EXTRA_KEY_PRE_EXECUTE_SCRIPT, scrips);
+        intent.putExtra(ScriptIntents.EXTRA_KEY_PATH, "/storage/emulated/0/hamibot_script.js");
+        intent.putExtra(ScriptIntents.EXTRA_KEY_LOOP_TIMES, 1);
+        intent.putExtra(ScriptIntents.EXTRA_KEY_DELAY, 0);
+        intent.putExtra(ScriptIntents.EXTRA_KEY_LOOP_INTERVAL, 0);
+        ScriptIntents.handleIntent(this, intent);
     }
     @Click(R.id.textView4)
     void textView4() {
