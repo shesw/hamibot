@@ -48,6 +48,15 @@
         android:padding="8dp"
         android:src="@drawable/ic_hamibot_stop_white" />
 
+    <ImageView
+        android:id="@+id/start_scripts"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_gravity="center"
+        android:background="@drawable/circle_green"
+        android:foreground="?selectableItemBackgroundBorderless"
+        android:padding="8dp"
+        android:src="@drawable/abc_vector_test" />
 
     <!--<ImageView
         android:id="@+id/settings"

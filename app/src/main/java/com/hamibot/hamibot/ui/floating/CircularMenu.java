@@ -7,6 +7,8 @@ import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.stardust.app.DialogUtils;
@@ -199,6 +201,12 @@ public class CircularMenu implements Recorder.OnStateChangedListener, LayoutInsp
                 .title(R.string.text_inspect_layout)
                 .build();
         DialogUtils.showDialog(mLayoutInspectDialog);
+    }
+
+    @Optional
+    @OnClick(R.id.start_scripts)
+    void start() {
+        LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent("start_run_scripts"));
     }
 
     @Optional
