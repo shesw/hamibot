@@ -1,21 +1,19 @@
-package com.shesw.hamibot.hamibot_scripts_test
+package com.shesw.hamibot.douyin_kol
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.hamibot.hamibot.R
-import com.hamibot.hamibot.autojs.AutoJs
 import com.hamibot.hamibot.external.ScriptIntents
 
-class HamibotScriptsTestActivity : AppCompatActivity(), View.OnClickListener {
+class DouyinKolActivity : AppCompatActivity(), View.OnClickListener {
 
     private var btnRun: View? = null
-    private var btnStop: View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_hamibot_scripts_test)
+        setContentView(R.layout.activity_douyin_kol)
         findView()
         initView()
         init()
@@ -23,12 +21,10 @@ class HamibotScriptsTestActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun findView() {
         btnRun = findViewById(R.id.run)
-        btnStop = findViewById(R.id.stop)
     }
 
     private fun initView() {
         btnRun?.setOnClickListener(this)
-        btnStop?.setOnClickListener(this)
     }
 
     private fun init() {
@@ -39,7 +35,7 @@ class HamibotScriptsTestActivity : AppCompatActivity(), View.OnClickListener {
         val intent = Intent()
 //        intent.putExtra(ScriptIntents.EXTRA_KEY_PRE_EXECUTE_SCRIPT, scrips);
         //        intent.putExtra(ScriptIntents.EXTRA_KEY_PRE_EXECUTE_SCRIPT, scrips);
-        intent.putExtra(ScriptIntents.EXTRA_KEY_PATH, "/storage/emulated/0/hamibot_script.js")
+        intent.putExtra(ScriptIntents.EXTRA_KEY_PATH, "/storage/emulated/0/myhamibot.js")
         intent.putExtra(ScriptIntents.EXTRA_KEY_LOOP_TIMES, 1)
         intent.putExtra(ScriptIntents.EXTRA_KEY_DELAY, 0)
         intent.putExtra(ScriptIntents.EXTRA_KEY_LOOP_INTERVAL, 0)
@@ -49,7 +45,6 @@ class HamibotScriptsTestActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.run -> run()
-            R.id.stop -> AutoJs.getInstance().scriptEngineService.stopAllAndToast()
         }
     }
 }

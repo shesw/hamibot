@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.hamibot.hamibot.external.ScriptIntents;
 import com.hamibot.hamibot.notification.NotificationUtil;
+import com.shesw.hamibot.douyin_kol.DouyinKolActivity;
 import com.shesw.hamibot.hamibot_scripts_test.HamibotScriptsTestActivity;
 import com.stardust.app.FragmentPagerAdapterBuilder;
 import com.stardust.app.OnActivityResultDelegate;
@@ -219,13 +220,7 @@ public class MainActivity extends BaseActivity implements OnActivityResultDelega
 
     @Click(R.id.button2)
     void button2() {
-        Intent intent = new Intent();
-//        intent.putExtra(ScriptIntents.EXTRA_KEY_PRE_EXECUTE_SCRIPT, scrips);
-        intent.putExtra(ScriptIntents.EXTRA_KEY_PATH, "/storage/emulated/0/hamibot_script.js");
-        intent.putExtra(ScriptIntents.EXTRA_KEY_LOOP_TIMES, 1);
-        intent.putExtra(ScriptIntents.EXTRA_KEY_DELAY, 0);
-        intent.putExtra(ScriptIntents.EXTRA_KEY_LOOP_INTERVAL, 0);
-        ScriptIntents.handleIntent(this, intent);
+        startActivity(new Intent(this, DouyinKolActivity.class));
     }
 
     public static class BindEvent {
@@ -260,6 +255,7 @@ public class MainActivity extends BaseActivity implements OnActivityResultDelega
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         mActivityResultMediator.onActivityResult(requestCode, resultCode, data);
     }
 
