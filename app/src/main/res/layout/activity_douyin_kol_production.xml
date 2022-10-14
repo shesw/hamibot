@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.shesw.hamibot.douyin_kol.DouyinKolIdActivity">
+    tools:context="com.shesw.hamibot.douyin_kol.DouyinKolProductionActivity">
+
 
     <Button
         android:id="@+id/run"

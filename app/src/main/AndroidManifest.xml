@@ -33,7 +33,10 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:label, android:icon, android:allowBackup">
         <activity
-            android:name="com.shesw.hamibot.douyin_kol.DouyinKolActivity"
+            android:name="com.shesw.hamibot.douyin_kol.DouyinKolProductionActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.shesw.hamibot.douyin_kol.DouyinKolIdActivity"
             android:exported="false" />
         <activity
             android:name="com.shesw.hamibot.hamibot_scripts_test.HamibotScriptsTestActivity"

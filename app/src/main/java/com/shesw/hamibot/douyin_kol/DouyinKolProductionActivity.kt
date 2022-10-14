@@ -11,7 +11,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.hamibot.hamibot.R
 import com.hamibot.hamibot.external.ScriptIntents
 
-class DouyinKolActivity : AppCompatActivity(), View.OnClickListener {
+class DouyinKolProductionActivity : AppCompatActivity(), View.OnClickListener {
 
     private var btnRun: View? = null
 
@@ -23,11 +23,21 @@ class DouyinKolActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_douyin_kol)
+        setContentView(R.layout.activity_douyin_kol_production)
+
         findView()
         initView()
         init()
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, IntentFilter("start_run_scripts"))
+    }
+
+    private fun run() {
+        val intent = Intent()
+        intent.putExtra(ScriptIntents.EXTRA_KEY_PATH, "/storage/emulated/0/douyin_production.js")
+        intent.putExtra(ScriptIntents.EXTRA_KEY_LOOP_TIMES, 1)
+        intent.putExtra(ScriptIntents.EXTRA_KEY_DELAY, 0)
+        intent.putExtra(ScriptIntents.EXTRA_KEY_LOOP_INTERVAL, 0)
+        ScriptIntents.handleIntent(this, intent)
     }
 
     override fun onDestroy() {
@@ -45,17 +55,6 @@ class DouyinKolActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun init() {
 
-    }
-
-    private fun run() {
-        val intent = Intent()
-//        intent.putExtra(ScriptIntents.EXTRA_KEY_PRE_EXECUTE_SCRIPT, scrips);
-        //        intent.putExtra(ScriptIntents.EXTRA_KEY_PRE_EXECUTE_SCRIPT, scrips);
-        intent.putExtra(ScriptIntents.EXTRA_KEY_PATH, "/storage/emulated/0/myhamibot.js")
-        intent.putExtra(ScriptIntents.EXTRA_KEY_LOOP_TIMES, 1)
-        intent.putExtra(ScriptIntents.EXTRA_KEY_DELAY, 0)
-        intent.putExtra(ScriptIntents.EXTRA_KEY_LOOP_INTERVAL, 0)
-        ScriptIntents.handleIntent(this, intent)
     }
 
     override fun onClick(v: View?) {

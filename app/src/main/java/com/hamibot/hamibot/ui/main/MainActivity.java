@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.core.view.GravityCompat;
@@ -22,12 +21,11 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.hamibot.hamibot.external.ScriptIntents;
 import com.hamibot.hamibot.notification.NotificationUtil;
-import com.shesw.hamibot.douyin_kol.DouyinKolActivity;
+import com.shesw.hamibot.douyin_kol.DouyinKolIdActivity;
+import com.shesw.hamibot.douyin_kol.DouyinKolProductionActivity;
 import com.shesw.hamibot.hamibot_scripts_test.HamibotScriptsTestActivity;
 import com.stardust.app.FragmentPagerAdapterBuilder;
 import com.stardust.app.OnActivityResultDelegate;
@@ -65,13 +63,10 @@ import com.hamibot.hamibot.ui.main.task.TaskManagerFragment_;
 import com.hamibot.hamibot.ui.settings.SettingsActivity_;
 import com.hamibot.hamibot.ui.widget.CommonMarkdownView;
 import com.hamibot.hamibot.ui.widget.SearchViewItem;
-import com.stardust.util.IntentUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Arrays;
 
@@ -220,7 +215,12 @@ public class MainActivity extends BaseActivity implements OnActivityResultDelega
 
     @Click(R.id.button2)
     void button2() {
-        startActivity(new Intent(this, DouyinKolActivity.class));
+        startActivity(new Intent(this, DouyinKolIdActivity.class));
+    }
+
+    @Click(R.id.button3)
+    void button3() {
+        startActivity(new Intent(this, DouyinKolProductionActivity.class));
     }
 
     public static class BindEvent {
