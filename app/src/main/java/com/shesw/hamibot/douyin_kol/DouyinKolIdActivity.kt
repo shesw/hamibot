@@ -1,12 +1,10 @@
 package com.shesw.hamibot.douyin_kol
 
-import com.hamibot.hamibot.R
 import com.shesw.hamibot.CslBaseActivity
 
 class DouyinKolIdActivity : CslBaseActivity() {
-
-    override fun getLayoutId(): Int {
-        return R.layout.activity_douyin_kol_id
+    override fun pageTitle(): String {
+        return "获取用户id"
     }
 
     override fun scriptsName(): String {
