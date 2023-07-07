@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.hamibot.hamibot.notification.NotificationUtil;
+import com.shesw.hamibot.csl_main.CSLMainActivity;
 import com.shesw.hamibot.douyin_kol.DouyinKolIdActivity;
 import com.shesw.hamibot.douyin_kol.DouyinKolProductionActivity;
 import com.shesw.hamibot.hamibot_scripts_test.HamibotScriptsTestActivity;
@@ -54,13 +55,8 @@ import com.hamibot.hamibot.services.CommandService;
 import com.hamibot.hamibot.tool.AccessibilityServiceTool;
 import com.hamibot.hamibot.ui.BaseActivity;
 import com.hamibot.hamibot.ui.common.NotAskAgainDialog;
-import com.hamibot.hamibot.ui.doc.DocsFragment_;
 import com.hamibot.hamibot.ui.log.LogActivity_;
 import com.hamibot.hamibot.ui.main.community.CommunityFragment;
-import com.hamibot.hamibot.ui.main.community.CommunityFragment_;
-import com.hamibot.hamibot.ui.main.scripts.MyScriptListFragment_;
-import com.hamibot.hamibot.ui.main.task.TaskManagerFragment_;
-import com.hamibot.hamibot.ui.settings.SettingsActivity_;
 import com.hamibot.hamibot.ui.widget.CommonMarkdownView;
 import com.hamibot.hamibot.ui.widget.SearchViewItem;
 
@@ -221,6 +217,11 @@ public class MainActivity extends BaseActivity implements OnActivityResultDelega
     @Click(R.id.button3)
     void button3() {
         startActivity(new Intent(this, DouyinKolProductionActivity.class));
+    }
+
+    @Click(R.id.button4)
+    void button4() {
+        startActivity(new Intent(this, CSLMainActivity.class));
     }
 
     public static class BindEvent {
