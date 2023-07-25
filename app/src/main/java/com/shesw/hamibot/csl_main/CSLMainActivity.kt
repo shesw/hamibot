@@ -2,7 +2,10 @@ package com.shesw.hamibot.csl_main
 
 
 import android.app.Activity
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -18,7 +21,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.FileOutputStream
-
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 
 class CSLMainActivity : Activity() {
 
@@ -31,12 +34,26 @@ class CSLMainActivity : Activity() {
 
     private val okhttpClient = OkHttpClient()
 
+    private val receiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            run()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_csl_main_layout)
 
         etUrl = findViewById(R.id.etUrl)
         etName = findViewById(R.id.etName)
+
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(receiver, IntentFilter("start_run_scripts"))
 
         GlobalScope.launch {
             val url = withContext(Dispatchers.IO) {
@@ -50,22 +67,26 @@ class CSLMainActivity : Activity() {
         }
 
         findViewById<View>(R.id.run)?.setOnClickListener {
-            GlobalScope.launch {
-                val fileName = etName?.text?.toString() ?: return@launch
+            run()
+        }
+    }
 
-                withContext(Dispatchers.IO) {
-                    Pref.def().edit().putString("${TAG}_url", etUrl?.text?.toString() ?: "").apply()
-                    Pref.def().edit().putString("${TAG}_name", fileName).apply()
-                }
+    private fun run() {
+        GlobalScope.launch {
+            val fileName = etName?.text?.toString() ?: return@launch
 
-                downloadJS(fileName)
-                val intent = Intent()
-                intent.putExtra(ScriptIntents.EXTRA_KEY_PATH, "${CslConst.dirPath}/$fileName.js")
-                intent.putExtra(ScriptIntents.EXTRA_KEY_LOOP_TIMES, 1)
-                intent.putExtra(ScriptIntents.EXTRA_KEY_DELAY, 0)
-                intent.putExtra(ScriptIntents.EXTRA_KEY_LOOP_INTERVAL, 0)
-                ScriptIntents.handleIntent(this@CSLMainActivity, intent)
+            withContext(Dispatchers.IO) {
+                Pref.def().edit().putString("${TAG}_url", etUrl?.text?.toString() ?: "").apply()
+                Pref.def().edit().putString("${TAG}_name", fileName).apply()
             }
+
+            downloadJS(fileName)
+            val intent = Intent()
+            intent.putExtra(ScriptIntents.EXTRA_KEY_PATH, "${CslConst.dirPath}/$fileName.js")
+            intent.putExtra(ScriptIntents.EXTRA_KEY_LOOP_TIMES, 1)
+            intent.putExtra(ScriptIntents.EXTRA_KEY_DELAY, 0)
+            intent.putExtra(ScriptIntents.EXTRA_KEY_LOOP_INTERVAL, 0)
+            ScriptIntents.handleIntent(this@CSLMainActivity, intent)
         }
     }
 
