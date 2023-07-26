@@ -1,1 +1,1 @@
-toast("Hello, Hamibot!");
+toast("Hello, FLBT!");

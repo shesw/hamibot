@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Hamibot</string>
+    <string name="app_name">FLBT</string>
     <string name="text_pair">配对</string>
     <string name="text_unpair">解除配对</string>
     <string name="text_pair_code">配对码</string>
@@ -13,7 +13,7 @@
     <string name="text_please_input_name">请输入名称</string>
     <string name="text_name">名称</string>
     <string name="text_go_to_setting">去设置</string>
-    <string name="explain_accessibility_permission">软件需要打开\"无障碍服务\"才能运行，请在随后的设置中选择\"Hamibot\"并开启服务。\n您也可以稍后在侧拉菜单中设置。</string>
+    <string name="explain_accessibility_permission">软件需要打开\"无障碍服务\"才能运行，请在随后的设置中选择\"FLBT\"并开启服务。\n您也可以稍后在侧拉菜单中设置。</string>
     <string name="text_cancel">取消</string>
     <string name="text_path_is_empty">路径为空</string>
     <string name="text_file_not_exists">文件不存在</string>
@@ -36,7 +36,7 @@
     <string name="text_licenses">开放源代码许可</string>
     <string name="text_do_not_remind_again">不再提示</string>
     <string name="copyright">Copyright©2020 All right reserves.</string>
-    <string name="developer">Hamibot</string>
+    <string name="developer">FLBT</string>
     <string name="qq" translatable="false">-</string>
     <string name="email" translatable="false">hello@hamibot.com</string>
     <string name="github">软件源代码</string>
@@ -377,7 +377,7 @@
     <string name="text_foreground_service">前台服务</string>
     <string name="key_foreground_servie">key_foreground_service</string>
     <string name="foreground_notification_channel_name">前台服务通知</string>
-    <string name="foreground_notification_title">Hamibot 保持运行中</string>
+    <string name="foreground_notification_title">FLBT 保持运行中</string>
     <string name="foreground_notification_text">点击进入主界面</string>
     <string name="text_run_on_other_broadcast">其他事件(广播)</string>
     <string name="text_broadcast_action">广播Action</string>
@@ -404,7 +404,7 @@
     <string name="text_project_save_error">项目保存失败 %s</string>
     <string name="text_night_mode">夜间模式</string>
     <string name="key_night_mode">key_night_mode</string>
-    <string name="text_run_on_startup">Hamibot 启动时</string>
+    <string name="text_run_on_startup">FLBT 启动时</string>
     <string name="text_usage_stats_permission">查看使用统计权限</string>
     <string name="description_usage_stats_permission">通过\"查看使用统计\"权限可以获取本设备过去使用应用的情况，从而使获取当前应用(currentPackage)时更准确。</string>
     <string name="text_open_with">打开方式</string>
