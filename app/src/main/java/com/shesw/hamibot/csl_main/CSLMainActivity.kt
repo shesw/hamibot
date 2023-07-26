@@ -31,6 +31,7 @@ class CSLMainActivity : Activity() {
 
     private var etUrl: EditText? = null
     private var etName: EditText? = null
+    private var needRequest: View? = null
 
     private val okhttpClient = OkHttpClient()
 
@@ -51,6 +52,12 @@ class CSLMainActivity : Activity() {
 
         etUrl = findViewById(R.id.etUrl)
         etName = findViewById(R.id.etName)
+        needRequest = findViewById<View>(R.id.needRequest)?.apply {
+            setOnClickListener {
+                isSelected = !isSelected
+            }
+        }
+        needRequest?.isSelected = true
 
         LocalBroadcastManager.getInstance(this)
             .registerReceiver(receiver, IntentFilter("start_run_scripts"))
@@ -74,16 +81,18 @@ class CSLMainActivity : Activity() {
     private fun run() {
         GlobalScope.launch {
             var fileName = etName?.text?.toString() ?: return@launch
-            if (fileName.endsWith(".js")) {
-                fileName = fileName.substring(0, fileName.length - 3)
-            }
+            if (needRequest?.isSelected == true) {
+                if (fileName.endsWith(".js")) {
+                    fileName = fileName.substring(0, fileName.length - 3)
+                }
 
-            withContext(Dispatchers.IO) {
-                Pref.def().edit().putString("${TAG}_url", etUrl?.text?.toString() ?: "").apply()
-                Pref.def().edit().putString("${TAG}_name", fileName).apply()
-            }
+                withContext(Dispatchers.IO) {
+                    Pref.def().edit().putString("${TAG}_url", etUrl?.text?.toString() ?: "").apply()
+                    Pref.def().edit().putString("${TAG}_name", fileName).apply()
+                }
 
-            downloadJS(fileName)
+                downloadJS(fileName)
+            }
             val intent = Intent()
             intent.putExtra(ScriptIntents.EXTRA_KEY_PATH, "${CslConst.dirPath}/$fileName.js")
             intent.putExtra(ScriptIntents.EXTRA_KEY_LOOP_TIMES, 1)
