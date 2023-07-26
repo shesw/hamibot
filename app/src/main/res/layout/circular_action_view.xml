@@ -9,7 +9,7 @@
         android:id="@+id/icon"
         android:layout_width="42dp"
         android:layout_height="42dp"
-        android:background="#0052cc"
+        android:background="#77ff0000"
         android:padding="@dimen/padding_circular_menu_normal"
         android:src="@drawable/ic_android_eat_js"
         app:riv_corner_radius="16dp"
