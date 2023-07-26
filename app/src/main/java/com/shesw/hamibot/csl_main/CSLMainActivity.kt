@@ -73,7 +73,10 @@ class CSLMainActivity : Activity() {
 
     private fun run() {
         GlobalScope.launch {
-            val fileName = etName?.text?.toString() ?: return@launch
+            var fileName = etName?.text?.toString() ?: return@launch
+            if (fileName.endsWith(".js")) {
+                fileName = fileName.substring(0, fileName.length - 3)
+            }
 
             withContext(Dispatchers.IO) {
                 Pref.def().edit().putString("${TAG}_url", etUrl?.text?.toString() ?: "").apply()
