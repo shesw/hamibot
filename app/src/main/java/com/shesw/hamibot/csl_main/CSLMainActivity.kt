@@ -10,10 +10,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.Toast
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.hamibot.hamibot.Pref
 import com.hamibot.hamibot.R
 import com.hamibot.hamibot.external.ScriptIntents
 import com.shesw.hamibot.CslConst
+import com.stardust.util.NetworkUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -21,7 +24,6 @@ import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.FileOutputStream
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 
 class CSLMainActivity : Activity() {
 
@@ -37,7 +39,7 @@ class CSLMainActivity : Activity() {
 
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            run()
+            run(etName?.text?.toString())
         }
     }
 
@@ -73,32 +75,56 @@ class CSLMainActivity : Activity() {
             etName?.setText(name)
         }
 
-        findViewById<View>(R.id.run)?.setOnClickListener {
-            run()
-        }
+        findViewById<View>(R.id.run)?.setOnClickListener { run(etName?.text?.toString()) }
+        findViewById<View>(R.id.cancel_proxy)?.setOnClickListener { run("cancel_proxy") }
+        findViewById<View>(R.id.set_proxy)?.setOnClickListener { run("set_proxy") }
+
     }
 
-    private fun run() {
+    private fun run(fileNameStr: String?) {
         GlobalScope.launch {
-            var fileName = etName?.text?.toString() ?: return@launch
-            if (needRequest?.isSelected == true) {
+            try {
+                var fileName = fileNameStr ?: return@launch
+                if (needRequest?.isSelected == true && !NetworkUtils.isNetWorkAvailable(this@CSLMainActivity)) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            this@CSLMainActivity,
+                            "network not available",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    return@launch
+                }
                 if (fileName.endsWith(".js")) {
                     fileName = fileName.substring(0, fileName.length - 3)
                 }
-
                 withContext(Dispatchers.IO) {
-                    Pref.def().edit().putString("${TAG}_url", etUrl?.text?.toString() ?: "").apply()
+                    Pref.def().edit().putString("${TAG}_url", etUrl?.text?.toString() ?: "")
+                        .apply()
                     Pref.def().edit().putString("${TAG}_name", fileName).apply()
                 }
+                if (needRequest?.isSelected == true) {
+                    downloadJS(fileName)
+                }
 
-                downloadJS(fileName)
+                val intent = Intent()
+                intent.putExtra(ScriptIntents.EXTRA_KEY_PATH, "${CslConst.dirPath}$fileName.js")
+                intent.putExtra(ScriptIntents.EXTRA_KEY_LOOP_TIMES, 1)
+                intent.putExtra(ScriptIntents.EXTRA_KEY_DELAY, 0)
+                intent.putExtra(ScriptIntents.EXTRA_KEY_LOOP_INTERVAL, 0)
+                withContext(Dispatchers.Main) {
+                    ScriptIntents.handleIntent(this@CSLMainActivity, intent)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        this@CSLMainActivity,
+                        e.toString(),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
-            val intent = Intent()
-            intent.putExtra(ScriptIntents.EXTRA_KEY_PATH, "${CslConst.dirPath}/$fileName.js")
-            intent.putExtra(ScriptIntents.EXTRA_KEY_LOOP_TIMES, 1)
-            intent.putExtra(ScriptIntents.EXTRA_KEY_DELAY, 0)
-            intent.putExtra(ScriptIntents.EXTRA_KEY_LOOP_INTERVAL, 0)
-            ScriptIntents.handleIntent(this@CSLMainActivity, intent)
         }
     }
 
@@ -114,7 +140,7 @@ class CSLMainActivity : Activity() {
             if (response.isSuccessful) {
                 val inputStream = response.body()?.byteStream() ?: return@withContext
 
-                val fos = FileOutputStream("${CslConst.dirPath}/$fileName.js")
+                val fos = FileOutputStream("${CslConst.dirPath}$fileName.js")
                 val buffer = ByteArray(1024)
                 var len: Int
                 while (inputStream.read(buffer).also { len = it } != -1) {
