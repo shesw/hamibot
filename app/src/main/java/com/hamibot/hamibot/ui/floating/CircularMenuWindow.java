@@ -6,8 +6,11 @@ import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.OrientationEventListener;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 
+import com.shesw.hamibot.views.FloatBtnOptionView;
 import com.stardust.enhancedfloaty.FloatyService;
 import com.stardust.enhancedfloaty.FloatyWindow;
 import com.stardust.enhancedfloaty.WindowBridge;
@@ -19,6 +22,8 @@ public class CircularMenuWindow extends FloatyWindow {
 
     private static final String KEY_POSITION_X = CircularMenuWindow.class.getName() + ".position.x";
     private static final String KEY_POSITION_Y = CircularMenuWindow.class.getName() + ".position.y";
+
+    protected FloatBtnOptionView optionView;
 
     protected CircularMenuFloaty mFloaty;
     protected CircularActionMenu mCircularActionMenu;
@@ -150,7 +155,7 @@ public class CircularMenuWindow extends FloatyWindow {
         } else {
             mCircularActionMenu.expand(5);
         }
-
+        optionView.setVisibility(View.VISIBLE);
     }
 
     public void setActiveAlpha(float activeAlpha) {
@@ -174,6 +179,7 @@ public class CircularMenuWindow extends FloatyWindow {
         setMenuPositionAtActionView();
         mCircularActionMenu.collapse();
         mCircularActionView.setAlpha(mDragGesture.getUnpressedAlpha());
+        optionView.setVisibility(View.GONE);
     }
 
     public boolean isExpanded() {
@@ -193,9 +199,12 @@ public class CircularMenuWindow extends FloatyWindow {
     }
 
     private void inflateWindowViews(FloatyService service) {
+        optionView = new FloatBtnOptionView(mContext, null);
         mCircularActionMenu = mFloaty.inflateMenuItems(service, this);
         mCircularActionView = mFloaty.inflateActionView(service, this);
         mCircularActionMenu.setVisibility(View.GONE);
+        optionView.setVisibility(View.GONE);
+        getWindowManager().addView(optionView, FloatBtnOptionView.Companion.createWindowLayoutParams());
         getWindowManager().addView(mCircularActionMenu, mActionViewWindowLayoutParams);
         getWindowManager().addView(mCircularActionView, mMenuWindowLayoutParams);
     }
@@ -212,6 +221,7 @@ public class CircularMenuWindow extends FloatyWindow {
                 .apply();
         try {
             mOrientationEventListener.disable();
+            getWindowManager().removeView(optionView);
             getWindowManager().removeView(mCircularActionMenu);
             getWindowManager().removeView(mCircularActionView);
             FloatyService.removeWindow(this);
