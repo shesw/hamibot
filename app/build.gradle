@@ -152,4 +152,6 @@ dependencies {
     implementation project(':common')
     implementation project(':autojs')
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.45-androidx'
 }
