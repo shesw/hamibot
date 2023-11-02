@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hamibot.hamibot.R
 import com.hamibot.hamibot.external.ScriptIntents
 import com.hamibot.hamibot.ui.floating.FloatyWindowManger
-import com.shesw.hamibot.sg_ocr.CaptureAndOcrManagerService
 import com.shesw.hamibot.utils.RequestUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -39,7 +38,8 @@ class FloatBtnOptionView(context: Context, attrs: AttributeSet?) : ConstraintLay
             "const img = captureScreen();\n" +
             "toastLog('开始识别');\n" +
             "const res = ocr.ocrImage2Native(img);\n" +
-            "log(res);"
+            "log(res);\n" +
+            "toastLog('识别完成')"
 
     private val runLAScript: (model: AccountModel) -> Unit = {
         runScript(laScript(it))
