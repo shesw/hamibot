@@ -7,6 +7,15 @@
     android:clickable="true"
     android:focusable="true">
 
+    <Button
+        android:id="@+id/capture_ocr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="capture and ocr"
+        android:textSize="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/account_rv"
         android:layout_width="match_parent"

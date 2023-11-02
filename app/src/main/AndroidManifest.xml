@@ -32,6 +32,11 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:label, android:icon, android:allowBackup">
+        <service
+            android:name="com.shesw.hamibot.sg_ocr.CaptureAndOcrManagerService"
+            android:enabled="true"
+            android:exported="true"></service>
+
         <activity
             android:name="com.shesw.hamibot.csl_main.CSLMainActivity"
             android:exported="false" />
