@@ -14,7 +14,7 @@ class AccountAdapter(
         helper ?: return
         item ?: return
         (helper.itemView as? TextView)?.run {
-            text = item.account.substring(0, item.account.indexOf("@"))
+            text = if (item.account.contains("@")) item.account.substring(0, item.account.indexOf("@")) else item.account
             setOnClickListener { runScript(item) }
         }
     }

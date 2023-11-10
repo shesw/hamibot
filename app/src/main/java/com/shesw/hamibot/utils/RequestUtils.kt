@@ -17,6 +17,11 @@ object RequestUtils {
     private var ap: String? = null
 
     suspend fun getLofterAccounts(context: Context): String {
+        val requestRes = getLofterAccountsByRequest()
+        if (!TextUtils.isEmpty(requestRes)) {
+            SpUtils.putLofterAccount(context, requestRes)
+            ap = requestRes
+        }
         if (!TextUtils.isEmpty(ap)) {
             return ap!!
         }
@@ -25,13 +30,10 @@ object RequestUtils {
             ap = spValue
             return ap!!
         }
-        val requestRes = getLofterAccountsByRequest()
-        SpUtils.putLofterAccount(context, requestRes)
-        ap = requestRes
         return ap ?: ""
     }
 
-    suspend fun getLofterAccountsByRequest(): String {
+    private suspend fun getLofterAccountsByRequest(): String {
         return withContext(Dispatchers.IO) {
             val url = "http://10.242.132.241:7778/lofter_accounts"
             val request = Request.Builder().url(url).build()

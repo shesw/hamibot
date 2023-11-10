@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.AttributeSet
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -58,6 +59,8 @@ class FloatBtnOptionView(context: Context, attrs: AttributeSet?) : ConstraintLay
         ScriptIntents.handleIntent(context, intent)
     }
 
+    private var account_rv: RecyclerView? = null
+
     companion object {
         private const val TAG = "FloatBtnOptionViewTAG"
 
@@ -72,11 +75,12 @@ class FloatBtnOptionView(context: Context, attrs: AttributeSet?) : ConstraintLay
 
     init {
         LayoutInflater.from(context).inflate(R.layout.float_btn_optn_view, this, true)?.run {
-            findViewById<RecyclerView>(R.id.account_rv).let {
+            account_rv = findViewById<RecyclerView>(R.id.account_rv).also {
                 it.layoutManager = GridLayoutManager(context, 3)
 
                 GlobalScope.launch(Dispatchers.Main) {
                     val res = RequestUtils.getLofterAccounts(context)
+                    Log.d(TAG, "res:$res")
                     val obj = JSONObject(res)
                     val accounts = obj.optJSONArray("a")
                     val passwords = obj.optJSONArray("p")
@@ -88,6 +92,25 @@ class FloatBtnOptionView(context: Context, attrs: AttributeSet?) : ConstraintLay
                 }
             }
             findViewById<View>(R.id.capture_ocr)?.setOnClickListener { a() }
+        }
+    }
+
+    override fun setVisibility(visibility: Int) {
+        super.setVisibility(visibility)
+        if (visibility != View.VISIBLE) {
+            return
+        }
+        GlobalScope.launch(Dispatchers.Main) {
+            val res = RequestUtils.getLofterAccounts(context)
+            Log.d(TAG, "res:$res")
+            val obj = JSONObject(res)
+            val accounts = obj.optJSONArray("a")
+            val passwords = obj.optJSONArray("p")
+            (account_rv?.adapter as? AccountAdapter)?.setNewData(ArrayList<AccountModel>().also { list ->
+                for (i in 0 until accounts.length()) {
+                    list.add(AccountModel(accounts.optString(i), passwords.optString(i)))
+                }
+            })
         }
     }
 
