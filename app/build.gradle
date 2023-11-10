@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.jakewharton.butterknife'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.yanzhenjie.andserver'
 
 def AAVersion = '4.8.0'
 def SupportLibVersion = '28.0.0'
@@ -154,4 +155,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.45-androidx'
+
+    implementation 'com.yanzhenjie.andserver:api:2.1.12'
+    kapt 'com.yanzhenjie.andserver:processor:2.1.12'
 }

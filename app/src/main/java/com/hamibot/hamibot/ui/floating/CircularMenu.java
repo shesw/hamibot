@@ -11,7 +11,9 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.shesw.hamibot.utils.AndServerManager;
 import com.stardust.app.DialogUtils;
+import com.stardust.app.GlobalAppContext;
 import com.stardust.app.OperationDialogBuilder;
 import com.stardust.autojs.core.record.Recorder;
 import com.stardust.enhancedfloaty.FloatyService;
@@ -38,10 +40,14 @@ import com.stardust.util.Func1;
 import com.stardust.view.accessibility.AccessibilityService;
 import com.stardust.view.accessibility.LayoutInspector;
 import com.stardust.view.accessibility.NodeInfo;
+import com.yanzhenjie.andserver.AndServer;
+import com.yanzhenjie.andserver.Server;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jdeferred.Deferred;
 import org.jdeferred.impl.DeferredObject;
+
+import java.util.concurrent.TimeUnit;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -206,7 +212,8 @@ public class CircularMenu implements Recorder.OnStateChangedListener, LayoutInsp
     @Optional
     @OnClick(R.id.start_scripts)
     void start() {
-        LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent("start_run_scripts"));
+//        LocalBroadcastManager.getInstance(mContext).sendBroadcast(new Intent("start_run_scripts"));
+        AndServerManager.start();
     }
 
     @Optional
