@@ -9,6 +9,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.GridLayoutManager
@@ -16,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hamibot.hamibot.R
 import com.hamibot.hamibot.external.ScriptIntents
 import com.hamibot.hamibot.ui.floating.FloatyWindowManger
+import com.shesw.hamibot.utils.AndServerManager
+import com.shesw.hamibot.utils.JSEngineHelper
 import com.shesw.hamibot.utils.RequestUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -42,22 +45,9 @@ class FloatBtnOptionView(context: Context, attrs: AttributeSet?) : ConstraintLay
             "log(res);\n" +
             "toastLog('识别完成')"
 
-    private val runLAScript: (model: AccountModel) -> Unit = {
-        runScript(laScript(it))
-    }
+    private val runLAScript: (model: AccountModel) -> Unit = { JSEngineHelper.runScriptStr(laScript(it)) }
 
-    private val runCAOScript: () -> Unit = {
-        runScript(caoScript())
-    }
-
-    private fun runScript(script: String) {
-        val intent = Intent()
-        intent.putExtra(ScriptIntents.EXTRA_KEY_PRE_EXECUTE_SCRIPT, script)
-        intent.putExtra(ScriptIntents.EXTRA_KEY_LOOP_TIMES, 1)
-        intent.putExtra(ScriptIntents.EXTRA_KEY_DELAY, 0)
-        intent.putExtra(ScriptIntents.EXTRA_KEY_LOOP_INTERVAL, 0)
-        ScriptIntents.handleIntent(context, intent)
-    }
+    private val runCAOScript: () -> Unit = { JSEngineHelper.runScriptStr(caoScript()) }
 
     private var account_rv: RecyclerView? = null
 
@@ -75,23 +65,29 @@ class FloatBtnOptionView(context: Context, attrs: AttributeSet?) : ConstraintLay
 
     init {
         LayoutInflater.from(context).inflate(R.layout.float_btn_optn_view, this, true)?.run {
+            findViewById<TextView>(R.id.tv_wifi_ip)?.text = AndServerManager.getLocalIpAddress()
+
             account_rv = findViewById<RecyclerView>(R.id.account_rv).also {
                 it.layoutManager = GridLayoutManager(context, 3)
 
                 GlobalScope.launch(Dispatchers.Main) {
                     val res = RequestUtils.getLofterAccounts(context)
                     Log.d(TAG, "res:$res")
-                    val obj = JSONObject(res)
-                    val accounts = obj.optJSONArray("a")
-                    val passwords = obj.optJSONArray("p")
-                    it.adapter = AccountAdapter(ArrayList<AccountModel>().also { list ->
-                        for (i in 0 until accounts.length()) {
-                            list.add(AccountModel(accounts.optString(i), passwords.optString(i)))
-                        }
-                    }, runLAScript)
+                    try {
+                        val obj = JSONObject(res)
+                        val accounts = obj.optJSONArray("a")
+                        val passwords = obj.optJSONArray("p")
+                        it.adapter = AccountAdapter(ArrayList<AccountModel>().also { list ->
+                            for (i in 0 until accounts.length()) {
+                                list.add(AccountModel(accounts.optString(i), passwords.optString(i)))
+                            }
+                        }, runLAScript)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "getLofterAccounts res exception: $e")
+                    }
                 }
             }
-            findViewById<View>(R.id.capture_ocr)?.setOnClickListener { a() }
+            findViewById<View>(R.id.capture_ocr)?.setOnClickListener { runCAOScript() }
         }
     }
 
@@ -113,10 +109,4 @@ class FloatBtnOptionView(context: Context, attrs: AttributeSet?) : ConstraintLay
             })
         }
     }
-
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    private fun a() {
-        runCAOScript()
-    }
-
 }

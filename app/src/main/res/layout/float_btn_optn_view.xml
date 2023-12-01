@@ -7,6 +7,20 @@
     android:clickable="true"
     android:focusable="true">
 
+    <TextView
+        android:id="@+id/tv_wifi_ip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#33333333"
+        android:padding="5dp"
+        android:textColor="#ffffff"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.1" />
+
     <Button
         android:id="@+id/capture_ocr"
         android:layout_width="wrap_content"

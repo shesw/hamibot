@@ -262,6 +262,7 @@ public class CircularMenu implements Recorder.OnStateChangedListener, LayoutInsp
     void stopAllScripts() {
         mWindow.collapse();
         AutoJs.getInstance().getScriptEngineService().stopAllAndToast();
+        AndServerManager.shutdown();
     }
 
 
