@@ -8,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.Response
 
 object RequestUtils {
 
@@ -39,9 +40,14 @@ object RequestUtils {
             val url = "http://${SpUtils.getValue(CSLMainActivity.HOST_AND_PORT_KEY) ?: "10.242.132.241:7778"}/lofter_accounts"
             val request = Request.Builder().url(url).build()
             val call = okhttpClient.newCall(request)
-            val response = call.execute()
+            var response: Response? = null
+            try {
+                response = call.execute()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
 
-            if (response.isSuccessful) {
+            if (response?.isSuccessful == true) {
                 response.body()?.string() ?: ""
             } else {
                 Log.d(TAG, "fail")
