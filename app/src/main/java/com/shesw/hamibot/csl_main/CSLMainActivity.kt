@@ -16,6 +16,7 @@ import com.hamibot.hamibot.Pref
 import com.hamibot.hamibot.R
 import com.hamibot.hamibot.external.ScriptIntents
 import com.shesw.hamibot.CslConst
+import com.shesw.hamibot.utils.SpUtils
 import com.stardust.util.NetworkUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -29,6 +30,7 @@ class CSLMainActivity : Activity() {
 
     companion object {
         private const val TAG = "CSLMainActivityTAG"
+        const val HOST_AND_PORT_KEY = "host_and_port_key"
     }
 
     private var etUrl: EditText? = null
@@ -53,10 +55,16 @@ class CSLMainActivity : Activity() {
         setContentView(R.layout.activity_csl_main_layout)
 
         etUrl = findViewById(R.id.etUrl)
+        GlobalScope.launch(Dispatchers.Main) {
+            etUrl?.setText(SpUtils.getValue(HOST_AND_PORT_KEY) ?: "")
+        }
         etName = findViewById(R.id.etName)
         needRequest = findViewById<View>(R.id.needRequest)?.apply {
             setOnClickListener {
                 isSelected = !isSelected
+                GlobalScope.launch {
+                    SpUtils.putValue(HOST_AND_PORT_KEY, etUrl?.text?.toString() ?: "")
+                }
             }
         }
         needRequest?.isSelected = true

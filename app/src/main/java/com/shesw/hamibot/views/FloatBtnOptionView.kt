@@ -71,7 +71,7 @@ class FloatBtnOptionView(context: Context, attrs: AttributeSet?) : ConstraintLay
                 it.layoutManager = GridLayoutManager(context, 3)
 
                 GlobalScope.launch(Dispatchers.Main) {
-                    val res = RequestUtils.getLofterAccounts(context)
+                    val res = RequestUtils.getLofterAccounts()
                     Log.d(TAG, "res:$res")
                     try {
                         val obj = JSONObject(res)
@@ -97,7 +97,7 @@ class FloatBtnOptionView(context: Context, attrs: AttributeSet?) : ConstraintLay
             return
         }
         GlobalScope.launch(Dispatchers.Main) {
-            val res = RequestUtils.getLofterAccounts(context)
+            val res = RequestUtils.getLofterAccounts()
             Log.d(TAG, "res:$res")
             val obj = JSONObject(res)
             val accounts = obj.optJSONArray("a")
